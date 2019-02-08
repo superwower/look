@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { of, Observable } from "rxjs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 type UserOutput = {
   name: string;
@@ -10,18 +11,21 @@ type UserOutput = {
   providedIn: "root"
 })
 export class AuthService {
-  constructor() {}
+  private authEndpoint = "/api/auth";
+  constructor(private http: HttpClient) {}
 
   authenticate(data: string): Observable<UserOutput> {
-    if (Math.random() < 0.5) {
-      // TODO: call http endpoint
-      return of({
-        name: "hitoshi"
-      });
-    }
-    return of({
-      name: "",
-      error: "Failed to authenticate"
-    });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    };
+    return this.http.post<UserOutput>(
+      this.authEndpoint,
+      {
+        data
+      },
+      httpOptions
+    );
   }
 }

@@ -1,8 +1,10 @@
 from flask import Flask, request
 import urllib
 from typing import Any
+from flask import jsonify
+import base64
 
-from .auth import FaceAuthenticator, UserRepository
+# from .auth import FaceAuthenticator, UserRepository
 
 app = Flask(__name__)
 # user_repo = UserRepository()
@@ -11,14 +13,12 @@ app = Flask(__name__)
 
 @app.route('/api/auth', methods=['POST'])  # type: ignore
 def authenticate() -> Any:
-    # url_encoded = request.args.get('company-data')
-    # url_decoded = urllib.unquote(url_encoded).decode('utf8')
-    # company_data = json.loads(url_decoded)
-    # print(company_data)
+    data = request.json["data"]
+    image = base64.b64decode(data.split(",")[1])
     # username, ok = face_auth.auth(target_filename)
 
     # return {
     #     "username": username,
     #     "error": "" if ok else "Failed to authenticate"
     # }
-    return True
+    return jsonify(name="hoge@hoge.com")
