@@ -7,6 +7,9 @@ verify_ssl = true
 ipython = "*"
 
 [packages]
+flask = "*"
+requests-ntlm = "*"
+toml = "*"
 
 [requires]
 python_version = "3.7"
