@@ -5,11 +5,17 @@ verify_ssl = true
 
 [dev-packages]
 ipython = "*"
+flake8 = "*"
 
 [packages]
 flask = "*"
 requests-ntlm = "*"
 toml = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+lint = "flake8 ."
+format = "yapf -i -r ."

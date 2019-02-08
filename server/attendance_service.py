@@ -4,30 +4,40 @@ from enum import Enum
 import toml
 from typing import NamedTuple
 
+
 class UserAuthInfo(NamedTuple):
     username: str
-    password: str 
+    password: str
+
 
 class AttendanceMode(Enum):
     START = "01"
     FINISH = "02"
+
 
 class AttendanceService:
     def __init__(self, endpoint: str) -> None:
         self.endpoint = endpoint
 
     def ping(self, user: UserAuthInfo) -> str:
-        r = requests.get(self.endpoint, auth=HttpNtlmAuth(user.username,user.password), verify=False)
+        r = requests.get(
+            self.endpoint,
+            auth=HttpNtlmAuth(user.username, user.password),
+            verify=False)
         if r.status_code == requests.codes.ok:
             return "Pong"
 
         r.raise_for_status()
 
-    def submit(self, user: UserAuthInfo, mode: AttendanceMode = AttendanceMode.START) -> bool:
-        payload = {
-            "SubmitMode": mode
-        }
-        r = requests.post(self.endpoint, data=payload, auth=HttpNtlmAuth(user.username,user.password), verify=False)
+    def submit(self,
+               user: UserAuthInfo,
+               mode: AttendanceMode = AttendanceMode.START) -> bool:
+        payload = {"SubmitMode": mode}
+        r = requests.post(
+            self.endpoint,
+            data=payload,
+            auth=HttpNtlmAuth(user.username, user.password),
+            verify=False)
         if r.status_code == requests.codes.ok:
             print(r.text)
             return True
