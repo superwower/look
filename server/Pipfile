@@ -17,5 +17,6 @@ yapf = "*"
 python_version = "3.7"
 
 [scripts]
+type = "mypy --ignore-missing-imports --strict ."
 lint = "flake8 ."
 format = "yapf -i -r ."

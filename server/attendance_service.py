@@ -24,10 +24,12 @@ class AttendanceService:
             self.endpoint,
             auth=HttpNtlmAuth(user.username, user.password),
             verify=False)
+
+        r.raise_for_status()
         if r.status_code == requests.codes.ok:
             return "Pong"
 
-        r.raise_for_status()
+        return ""
 
     def submit(self,
                user: UserAuthInfo,
@@ -38,11 +40,14 @@ class AttendanceService:
             data=payload,
             auth=HttpNtlmAuth(user.username, user.password),
             verify=False)
+
+        r.raise_for_status()
+
         if r.status_code == requests.codes.ok:
             print(r.text)
             return True
 
-        r.raise_for_status()
+        return False
 
 
 if __name__ == "__main__":
