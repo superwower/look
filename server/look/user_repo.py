@@ -1,11 +1,6 @@
 from typing import List, Iterator, Optional
 
-
-class User:
-    def __init__(self, username: str, password: str, filename: str):
-        self.username = username
-        self.password = password
-        self.filename = filename
+from .model import User
 
 
 class UserRepository:
