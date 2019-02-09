@@ -1,24 +1,30 @@
 from flask import Flask, request
-import urllib
-from typing import Any
+from typing import Any, Optional
 from flask import jsonify
 import base64
 
-# from .auth import FaceAuthenticator, UserRepository
+from .face_search_service import FaceSearchService
+from .attendance_service import AttendanceService
+from .user_repo import UserRepository
 
 app = Flask(__name__)
-# user_repo = UserRepository()
-# face_auth = FaceAuthenticator(user_repo)
 
 
 @app.route('/api/auth', methods=['POST'])  # type: ignore
 def authenticate() -> Any:
-    data = request.json["data"]
-    image = base64.b64decode(data.split(",")[1])
-    # username, ok = face_auth.auth(target_filename)
+    collectionId = "FIXME"  # FIXME: fix here
+    face_search_service = FaceSearchService(collectionId)
+    user_repo = UserRepository()
+    attendance_service = AttendanceService()
+    raw_image = request.json.get("data")
+    mode: Optional[str] = request.json.get("mode")
+    image = base64.b64decode(raw_image.split(",")[1])
+    face_id, ok = face_search_service.search(image)
+    if not ok:
+        return jsonify(name="", error="Error in searching face")
 
-    # return {
-    #     "username": username,
-    #     "error": "" if ok else "Failed to authenticate"
-    # }
-    return jsonify(name="hoge@hoge.com")
+    user = user_repo.find_by_face_id(face_id)
+    if attendance_service.submit(user, mode):
+        return jsonify(name=user.username)
+
+    return jsonify(name="", error="")
