@@ -1,4 +1,4 @@
-from typing import List, Iterator, Optional
+from typing import Iterator, Optional
 
 from .model import User, Face
 

@@ -1,5 +1,4 @@
-from flask import Flask, current_app
-from flask.cli import FlaskGroup
+from flask import current_app
 import click
 from flask.cli import FlaskGroup
 import boto3

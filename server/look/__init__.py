@@ -1,6 +1,5 @@
 import os
-from flask import Flask, request
-from typing import Any, Optional
+from flask import Flask
 
 from .model import db
 from .route import add_routes
