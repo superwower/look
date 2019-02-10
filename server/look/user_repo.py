@@ -1,20 +1,20 @@
 from typing import List, Iterator, Optional
 
-from .model import User
+from .model import User, Face
 
 
 class UserRepository:
     def __init__(self) -> None:
-        self.users: List[User] = []
         pass
 
     def get_users(self) -> Iterator[User]:
-        for user in self.users:
+        users = User.query.all()
+        for user in users:
             yield user
 
     def find_by_face_id(self, face_id: str) -> Optional[User]:
-        # TODO: run query
-        users: List[User] = []
-        assert len(users) <= 1, f"mutiple users with face_id {face_id}"
+        face = Face.query.filter_by(id=face_id).first()
+        if face is None:
+            return None
 
-        return None if len(users) == 0 else users[0]
+        return User.query.filter_by(id=face.user_id).first()
