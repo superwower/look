@@ -10,4 +10,4 @@ face authentication system
 - Backend
   - Flask
 - Infrastructure
-  - Rekognition (Probably)
+  - Rekognition
