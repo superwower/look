@@ -14,6 +14,17 @@ class AttendanceMode(Enum):
     START = "01"
     FINISH = "02"
 
+class MockAttendanceService:
+    def __init__(self, endpoint: str) -> None:
+        self.endpoint = endpoint
+
+    def ping(self, user: UserAuthInfo) -> str:
+        return "Pong"
+
+    def submit(self,
+               user: UserAuthInfo,
+               mode: AttendanceMode = AttendanceMode.START) -> bool:
+        return True
 
 class AttendanceService:
     def __init__(self, endpoint: str) -> None:

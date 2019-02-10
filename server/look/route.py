@@ -1,13 +1,20 @@
 from typing import Any
+from flask import request
+from flask import jsonify
+import base64
 
+from .face_search_service import FaceSearchService
+from .attendance_service import MockAttendanceService, AttendanceService
+from .user_repo import UserRepository
 
 def add_routes(app) -> None:
     @app.route('/api/auth', methods=['POST'])  # type: ignore
     def authenticate() -> Any:
-        collectionId = "FIXME"  # FIXME: fix here
-        face_search_service = FaceSearchService(collectionId)
+        collection_id = "look"
+        # app.config["COLLECTION_ID"]
+        face_search_service = FaceSearchService(collection_id)
         user_repo = UserRepository()
-        attendance_service = AttendanceService()
+        attendance_service = MockAttendanceService("http://endpont.hoge") #  TODO: replace with a real one
         raw_image = request.json.get("data")
         mode: Optional[str] = request.json.get("mode")
         image = base64.b64decode(raw_image.split(",")[1])
@@ -16,7 +23,11 @@ def add_routes(app) -> None:
             return jsonify(name="", error="Error in searching face")
 
         user = user_repo.find_by_face_id(face_id)
-        if attendance_service.submit(user, mode):
-            return jsonify(name=user.username)
+        if user is None:
+            return jsonify(name="", error="Failed to authenticate")
 
-        return jsonify(name="", error="")
+        if not attendance_service.submit(user, mode):
+            return jsonify(name="", error="Failed to record attendance")
+
+        return jsonify(name=user.email)
+

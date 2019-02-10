@@ -1,12 +1,7 @@
 import os
 from flask import Flask, request
 from typing import Any, Optional
-from flask import jsonify
-import base64
 
-from .face_search_service import FaceSearchService
-from .attendance_service import AttendanceService
-from .user_repo import UserRepository
 from .model import db
 from .route import add_routes
 

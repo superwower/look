@@ -16,7 +16,7 @@ class FaceSearchService:
         response = self.client.search_faces_by_image(
             CollectionId=self.collectionId,
             FaceMatchThreshold=self.faceMatchThreshold,
-            Image=image,
+            Image={"Bytes": image},
             MaxFaces=self.maxFaces)
         if len(response["FaceMatches"]) == 1:
             return (response["FaceMatches"][0]["Face"]["FaceId"], True)

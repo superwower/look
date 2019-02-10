@@ -13,7 +13,7 @@ class UserRepository:
             yield user
 
     def find_by_face_id(self, face_id: str) -> Optional[User]:
-        face = Face.query.filter_by(id=face_id).first()
+        face = Face.query.filter_by(face_id=face_id).first()
         if face is None:
             return None
 
