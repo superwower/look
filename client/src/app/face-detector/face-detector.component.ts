@@ -12,6 +12,7 @@ export class FaceDetectorComponent implements OnInit {
   @ViewChild("canvas") canvasDom;
   @ViewChild("video") videoDom;
 
+  private hasCamera: boolean = false;
   private context: string;
   private authenticated: boolean = false;
   constructor(private authService: AuthService) {}
@@ -19,11 +20,20 @@ export class FaceDetectorComponent implements OnInit {
   async ngOnInit() {
     const canvas = this.canvasDom.nativeElement;
     const context = canvas.getContext("2d");
-    const video = this.videoDom.nativeElement;
+    let video;
 
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+        video = this.videoDom.nativeElement;
+        video.srcObject = stream;
+        this.hasCamera = true;
+      }
+    } catch (e) {
+      alert("カメラを認識できませんでした");
+      return;
     }
     await faceapi.loadTinyFaceDetectorModel("assets/models");
     let timer = null;
@@ -55,7 +65,7 @@ export class FaceDetectorComponent implements OnInit {
             });
           }
         }
-      }, 100);
+      }, 2000);
     timer = run();
   }
 }

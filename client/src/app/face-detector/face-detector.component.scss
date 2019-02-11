@@ -5,6 +5,43 @@
 }
 
 #canvas {
-  // width: 640px;
-  // height: 480px;
+  display: block;
+}
+
+.face-otr--display-container {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 640px;
+  height: 480px;
+  text-align: center;
+}
+
+.face-otr--display {
+  width: 640px;
+  height: 480px;
+  border: 2px solid black;
+  margin: 0 auto;
+}
+
+.face-otr--display--hidden {
+  display: none;
+}
+
+.face-otr {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.face-otr--buttons {
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.face-otr--button {
+  margin: 0 1rem;
 }

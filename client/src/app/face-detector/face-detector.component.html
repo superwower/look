@@ -1,1 +1,15 @@
-<video #video id="video" autoplay></video> <canvas #canvas id="canvas" width="640" height="480"></canvas>
+<div class="face-otr">
+  <div class="face-otr--display-container">
+    <div class="face-otr--display">
+      <div [ngClass]="{ 'face-otr--display--hidden': !hasCamera }">
+        <video #video id="video" autoplay></video>
+        <canvas #canvas id="canvas" width="640" height="480"></canvas>
+      </div>
+      <span *ngIf="!hasCamera">カメラを接続してください!</span>
+    </div>
+  </div>
+  <div class="face-otr--buttons">
+    <button mat-fab color="primary" class="face-otr--button">出勤</button>
+    <button mat-fab color="accent" class="face-otr--button">退勤</button>
+  </div>
+</div>
