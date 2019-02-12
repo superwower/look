@@ -1,41 +1,60 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import * as faceapi from "face-api.js";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import * as faceapi from 'face-api.js';
 
-import { AuthService } from "../auth.service";
+import {AuthService} from '../auth.service';
+
+type AttendanceMode = 'start' | 'finish';
 
 @Component({
-  selector: "app-face-detector",
-  templateUrl: "./face-detector.component.html",
-  styleUrls: ["./face-detector.component.scss"]
+  selector: 'app-face-detector',
+  templateUrl: './face-detector.component.html',
+  styleUrls: ['./face-detector.component.scss'],
 })
 export class FaceDetectorComponent implements OnInit {
-  @ViewChild("canvas") canvasDom;
-  @ViewChild("video") videoDom;
+  @ViewChild('canvas') canvasDom;
+  @ViewChild('video') videoDom;
 
+  private attendanceMode: AttendanceMode = 'start';
   private hasCamera: boolean = false;
   private context: string;
   private authenticated: boolean = false;
   constructor(private authService: AuthService) {}
 
+  switchAttendanceMode(): void {
+    switch (this.attendanceMode) {
+      case 'start': {
+        this.attendanceMode = 'finish';
+        break;
+      }
+      case 'finish': {
+        this.attendanceMode = 'start';
+        break;
+      }
+      default: {
+        throw new Error(`Invalid attendance mode ${this.attendanceMode}`);
+      }
+    }
+  }
+
   async ngOnInit() {
     const canvas = this.canvasDom.nativeElement;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     let video;
 
     try {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true
+          video: true,
         });
         video = this.videoDom.nativeElement;
         video.srcObject = stream;
         this.hasCamera = true;
       }
     } catch (e) {
-      alert("カメラを認識できませんでした");
+      alert('カメラを認識できませんでした');
       return;
     }
-    await faceapi.loadTinyFaceDetectorModel("assets/models");
+    await faceapi.loadTinyFaceDetectorModel('assets/models');
     let timer = null;
     const run = () =>
       setInterval(async () => {
@@ -44,25 +63,27 @@ export class FaceDetectorComponent implements OnInit {
         const data = canvas.toDataURL();
         let result = await faceapi.detectAllFaces(
           canvas,
-          new faceapi.TinyFaceDetectorOptions()
+          new faceapi.TinyFaceDetectorOptions(),
         );
         if (result.length === 1) {
-          const { box, score } = result[0];
-          const { x, y, width, height } = box;
+          const {box, score} = result[0];
+          const {x, y, width, height} = box;
           context.beginPath();
           context.rect(x, y, width, height);
           context.stroke();
           if (score >= 0.5) {
             clearInterval(timer);
-            this.authService.authenticate(data).subscribe(result => {
-              if (result.error) {
-                alert(result.error);
-              } else {
-                alert(result.name);
-                this.authenticated = true;
-              }
-              timer = run();
-            });
+            this.authService
+              .authenticate({image: data, mode: this.attendanceMode})
+              .subscribe(result => {
+                if (result.error) {
+                  alert(result.error);
+                } else {
+                  alert(result.name);
+                  this.authenticated = true;
+                }
+                timer = run();
+              });
           }
         }
       }, 2000);

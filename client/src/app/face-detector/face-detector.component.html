@@ -9,7 +9,6 @@
     </div>
   </div>
   <div class="face-otr--buttons">
-    <button mat-fab color="primary" class="face-otr--button">出勤</button>
-    <button mat-fab color="accent" class="face-otr--button">退勤</button>
+    <button mat-fab color="primary" class="face-otr--button" (click)="switchAttendanceMode()">{{attendanceMode}}</button>
   </div>
 </div>
