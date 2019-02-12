@@ -1,8 +1,8 @@
 import requests
 from requests_ntlm import HttpNtlmAuth
 from enum import Enum
-import toml
 from typing import NamedTuple
+import os
 
 
 class UserAuthInfo(NamedTuple):
@@ -47,12 +47,16 @@ class AttendanceService:
     def submit(self,
                user: UserAuthInfo,
                mode: AttendanceMode = AttendanceMode.START) -> bool:
-        payload = {"SubmitMode": mode}
-        r = requests.post(
+        # First login and get cookies
+        session = requests.Session()
+        session.get(
             self.endpoint,
-            data=payload,
             auth=HttpNtlmAuth(user.username, user.password),
             verify=False)
+
+        # use the cookies above to post attendance
+        payload = {"SubmitMode": mode}
+        r = session.post(self.endpoint, data=payload, verify=False)
 
         r.raise_for_status()
 
@@ -64,9 +68,7 @@ class AttendanceService:
 
 
 if __name__ == "__main__":
-    with open("./config.toml", "r") as f:
-        config = toml.load(f)
-
-    user = UserAuthInfo(config["user"]["username"], config["user"]["password"])
-    service = AttendanceService(endpoint=config["endpoint"])
-    print(service.ping(user))
+    user = UserAuthInfo(os.environ['LOOK_USERNAME'],
+                        os.environ['LOOK_PASSWORD'])
+    service = AttendanceService(endpoint=os.environ['LOOK_ENDPOINT'])
+    print(service.submit(user))
