@@ -7,9 +7,10 @@ import { MatButtonModule } from "@angular/material";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FaceDetectorComponent } from "./face-detector/face-detector.component";
+import { MeComponent } from "./me/me.component";
 
 @NgModule({
-  declarations: [AppComponent, FaceDetectorComponent],
+  declarations: [AppComponent, FaceDetectorComponent, MeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
