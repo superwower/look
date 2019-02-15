@@ -1,6 +1,11 @@
 <ul>
-  <input #imageInput type="file" (change)="registerFace(imageInput)">
-  <span>{{uploadStatus}}</span>
+  <input
+    #imageInput
+    type="file"
+    accept="image/*"
+    (change)="registerFace(imageInput)"
+  />
+  <span>{{ uploadStatus }}</span>
   <li *ngFor="let face of faces">
     <img [src]="face.data" [alt]="face.id" />
     <button mat-fab (click)="deleteFace(face.id)">Delete</button>

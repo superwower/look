@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import {Face} from "../face";
+import { Face } from "../face";
 import { AuthService } from "../auth.service";
 
 enum UploadStatus {
