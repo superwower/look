@@ -17,7 +17,7 @@ def add_routes(app) -> None:
         user_repo = UserRepository()
         # TODO: replace with a real one
         attendance_service = MockAttendanceService("http://endpont.hoge")
-        raw_image = request.json.get("data")
+        raw_image = request.json.get("image")
         mode: Optional[str] = request.json.get("mode")
         image = base64.b64decode(raw_image.split(",")[1])
         face_id, ok = face_search_service.search(image)
