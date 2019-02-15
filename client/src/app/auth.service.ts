@@ -29,7 +29,7 @@ export class AuthService {
     return of(true);
   }
 
-  deleteFace(): Observable<boolean> {
+  deleteFace(id: number): Observable<boolean> {
     return of(true);
   }
 

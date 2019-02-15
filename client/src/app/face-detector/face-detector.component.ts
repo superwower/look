@@ -86,7 +86,7 @@ export class FaceDetectorComponent implements OnInit {
               });
           }
         }
-      }, 2000);
+      }, 100);
     timer = run();
   }
 }
