@@ -46,19 +46,25 @@ def face():
 @click.argument("email")
 @click.argument("path")
 @click.option("--collection-id", default="look", help='Collection ID')
-def add_face(email: str, path: str, collection_id: str) -> None:
+@click.option("--only-id/--no-only-id", default=False, help="If set, it does not send image data")
+def add_face(email: str, path: str, collection_id: str, only_id: bool) -> None:
     db.init_app(current_app)
-    with open(path, "rb") as f:
-        client = boto3.client('rekognition')
-        response = client.index_faces(
-            CollectionId=collection_id,
-            Image={'Bytes': f.read()},
-            MaxFaces=1,
-        )
+    if not only_id:
+        with open(path, "rb") as f:
+            client = boto3.client('rekognition')
+            response = client.index_faces(
+                CollectionId=collection_id,
+                Image={'Bytes': f.read()},
+                MaxFaces=1,
+            )
 
-    assert len(response["FaceRecords"]) == 1
+        assert len(response["FaceRecords"]) == 1
+
     user = User.query.filter_by(email=email).first()
-    face = Face(face_id=response["FaceRecords"][0]["Face"]["FaceId"])
+    if only_id:
+        face = Face(face_id=path)
+    else:
+        face = Face(face_id=response["FaceRecords"][0]["Face"]["FaceId"])
     user.faces.append(face)
     db.session.add(user)
     db.session.commit()
