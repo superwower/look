@@ -6,7 +6,7 @@ import os
 
 
 class UserAuthInfo(NamedTuple):
-    username: str
+    email: str
     password: str
 
 
@@ -35,7 +35,7 @@ class AttendanceService:
     def ping(self, user: UserAuthInfo) -> str:
         r = requests.get(
             self.endpoint,
-            auth=HttpNtlmAuth(user.username, user.password),
+            auth=HttpNtlmAuth(user.email, user.password),
             verify=False)
 
         r.raise_for_status()
@@ -51,7 +51,7 @@ class AttendanceService:
         session = requests.Session()
         session.get(
             self.endpoint,
-            auth=HttpNtlmAuth(user.username, user.password),
+            auth=HttpNtlmAuth(user.email, user.password),
             verify=False)
 
         # use the cookies above to post attendance
