@@ -25,15 +25,15 @@ export class AuthService {
     return this.http.post<UserOutput>(this.authEndpoint, data, httpOptions);
   }
 
-  registerFace(image: File): Observable<boolean> {
-    return of(true);
+  registerFace(image: File): Observable<Face> {
+    return this.http.post<Face>("/api/faces/new", { image });
   }
 
-  deleteFace(id: number): Observable<boolean> {
-    return of(true);
+  deleteFace(id: number): Observable<any> {
+    return this.http.delete<any>(`/api/faces/${id}/delete`);
   }
 
-  getFaces(): Observable<Face[]> {
-    return of([]);
+  getFaces(id: number): Observable<Face[]> {
+    return this.http.get<Face[]>(`/api/faces`);
   }
 }
