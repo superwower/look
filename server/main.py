@@ -46,7 +46,10 @@ def face():
 @click.argument("email")
 @click.argument("path")
 @click.option("--collection-id", default="look", help='Collection ID')
-@click.option("--only-id/--no-only-id", default=False, help="If set, it does not send image data")
+@click.option(
+    "--only-id/--no-only-id",
+    default=False,
+    help="If set, it does not send image data")
 def add_face(email: str, path: str, collection_id: str, only_id: bool) -> None:
     db.init_app(current_app)
     if not only_id:

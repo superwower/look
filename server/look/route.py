@@ -17,7 +17,7 @@ def add_routes(app) -> None:
         face_search_service = FaceSearchService(collection_id)
         user_repo = UserRepository()
         if app.config.get("attendance_service_type") == "real":
-            endpoint = app.config.get("attendance_service_endpoint") 
+            endpoint = app.config.get("attendance_service_endpoint")
             assert endpoint is not None
             attendance_service = AttendanceService(endpoint)
         else:
@@ -33,7 +33,8 @@ def add_routes(app) -> None:
         if user is None:
             return jsonify(name="", error="Failed to authenticate")
 
-        if not attendance_service.submit(user, mode=None):  # TODO: properly handle the request param
+        if not attendance_service.submit(
+                user, mode=None):  # TODO: properly handle the request param
             return jsonify(name="", error="Failed to record attendance")
 
         return jsonify(name=user.email)
