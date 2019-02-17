@@ -1,4 +1,4 @@
 export type Face = {
-  data: string;
-  id: number;
-};
+  data: string
+  id: number
+}
