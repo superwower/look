@@ -4,7 +4,8 @@ from flask import jsonify
 import base64
 
 from .face_search_service import FaceSearchService
-from .attendance_service import AttendanceService, MockAttendanceService
+from .attendance_service import (AbstractAttendanceService, AttendanceService,
+                                 MockAttendanceService)
 from .user_repo import UserRepository
 
 
@@ -16,6 +17,7 @@ def add_routes(app: Flask) -> None:
         collection_id = "look"
         face_search_service = FaceSearchService(collection_id)
         user_repo = UserRepository()
+        attendance_service: AbstractAttendanceService
         if app.config.get("attendance_service_type") == "real":
             endpoint = app.config.get("attendance_service_endpoint")
             assert endpoint is not None
