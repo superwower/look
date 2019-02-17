@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 ipython = "*"
 flake8 = "*"
+mypy = "*"
+yapf = "*"
 
 [packages]
 flask = "*"
@@ -20,5 +22,6 @@ python_version = "3.7"
 
 [scripts]
 type = "mypy --ignore-missing-imports --strict ."
-lint = "flake8 ."
-format = "yapf -i -r ."
+lint = "flake8 --exclude=.venv ."
+format = "yapf -i -r --exclude .venv ."
+format-check = "yapf -r -d --exclude .venv ."

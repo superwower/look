@@ -1,13 +1,13 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatButtonModule } from "@angular/material";
+import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core'
+import { HttpClientModule } from '@angular/common/http'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { MatButtonModule } from '@angular/material'
 
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import { FaceDetectorComponent } from "./face-detector/face-detector.component";
-import { MeComponent } from "./me/me.component";
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { FaceDetectorComponent } from './face-detector/face-detector.component'
+import { MeComponent } from './me/me.component'
 
 @NgModule({
   declarations: [AppComponent, FaceDetectorComponent, MeComponent],
@@ -16,9 +16,9 @@ import { MeComponent } from "./me/me.component";
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

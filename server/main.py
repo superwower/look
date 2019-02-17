@@ -8,7 +8,7 @@ from look.model import db, User, Face
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)
-def cli():
+def cli() -> None:
     """Management script for the Wiki application."""
     pass
 
@@ -22,7 +22,7 @@ def init_db() -> None:
 
 
 @cli.group()
-def user():
+def user() -> None:
     pass
 
 
@@ -38,7 +38,7 @@ def add_user(email: str, password: str) -> None:
 
 
 @cli.group()
-def face():
+def face() -> None:
     pass
 
 
@@ -46,7 +46,10 @@ def face():
 @click.argument("email")
 @click.argument("path")
 @click.option("--collection-id", default="look", help='Collection ID')
-@click.option("--only-id/--no-only-id", default=False, help="If set, it does not send image data")
+@click.option(
+    "--only-id/--no-only-id",
+    default=False,
+    help="If set, it does not send image data")
 def add_face(email: str, path: str, collection_id: str, only_id: bool) -> None:
     db.init_app(current_app)
     if not only_id:

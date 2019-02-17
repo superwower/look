@@ -12,7 +12,7 @@ class FaceSearchService:
         self.faceMatchThreshold = faceMatchThreshold
         self.maxFaces = maxFaces
 
-    def search(self, image: str) -> Tuple[str, bool]:
+    def search(self, image: bytes) -> Tuple[str, bool]:
         response = self.client.search_faces_by_image(
             CollectionId=self.collectionId,
             FaceMatchThreshold=self.faceMatchThreshold,

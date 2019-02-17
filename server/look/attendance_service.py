@@ -3,6 +3,7 @@ from requests_ntlm import HttpNtlmAuth
 from enum import Enum
 from typing import NamedTuple
 import os
+from abc import ABC, abstractmethod
 
 
 class UserAuthInfo(NamedTuple):
@@ -15,7 +16,19 @@ class AttendanceMode(Enum):
     FINISH = "02"
 
 
-class MockAttendanceService:
+class AbstractAttendanceService(ABC):
+    @abstractmethod
+    def ping(self, user: UserAuthInfo) -> str:
+        pass
+
+    @abstractmethod
+    def submit(self,
+               user: UserAuthInfo,
+               mode: AttendanceMode = AttendanceMode.START) -> bool:
+        pass
+
+
+class MockAttendanceService(AbstractAttendanceService):
     def __init__(self, endpoint: str) -> None:
         self.endpoint = endpoint
 
@@ -28,7 +41,7 @@ class MockAttendanceService:
         return True
 
 
-class AttendanceService:
+class AttendanceService(AbstractAttendanceService):
     def __init__(self, endpoint: str) -> None:
         self.endpoint = endpoint
 
@@ -55,7 +68,7 @@ class AttendanceService:
             verify=False)
 
         # use the cookies above to post attendance
-        payload = {"SubmitMode": mode}
+        payload = {"SubmitMode": str(mode)}
         r = session.post(self.endpoint, data=payload, verify=False)
 
         r.raise_for_status()
