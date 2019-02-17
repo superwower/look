@@ -8,7 +8,7 @@ from look.model import db, User, Face
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)
-def cli():
+def cli() -> None:
     """Management script for the Wiki application."""
     pass
 
@@ -22,7 +22,7 @@ def init_db() -> None:
 
 
 @cli.group()
-def user():
+def user() -> None:
     pass
 
 
@@ -38,7 +38,7 @@ def add_user(email: str, password: str) -> None:
 
 
 @cli.group()
-def face():
+def face() -> None:
     pass
 
 

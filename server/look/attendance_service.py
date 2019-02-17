@@ -55,7 +55,7 @@ class AttendanceService:
             verify=False)
 
         # use the cookies above to post attendance
-        payload = {"SubmitMode": mode}
+        payload = {"SubmitMode": str(mode)}
         r = session.post(self.endpoint, data=payload, verify=False)
 
         r.raise_for_status()

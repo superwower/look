@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
+from typing import Any
 
-db = SQLAlchemy()
+db = SQLAlchemy()  # type: Any
 
 
 class User(db.Model):
