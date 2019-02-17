@@ -18,7 +18,7 @@ jobs:
           working_directory: server
           command: |
             sudo pip install pipenv
-            pipenv install
+            pipenv install --dev
       - save_cache:
           working_directory: server
           key: pip-deps-{{ checksum "server/Pipfile.lock" }}
@@ -31,4 +31,4 @@ jobs:
           command: |
             pipenv run lint
             pipenv run type
-            pipenv run format
+            pipenv run format-check

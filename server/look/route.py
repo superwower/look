@@ -1,10 +1,10 @@
-from typing import Any, Optional
+from typing import Any
 from flask import request
 from flask import jsonify
 import base64
 
 from .face_search_service import FaceSearchService
-from .attendance_service import AttendanceService, MockAttendanceService, AttendanceMode
+from .attendance_service import AttendanceService, MockAttendanceService
 from .user_repo import UserRepository
 
 
@@ -23,7 +23,7 @@ def add_routes(app) -> None:
         else:
             attendance_service = MockAttendanceService("http://endpont.hoge")
         raw_image = request.json.get("image")
-        mode: Optional[str] = request.json.get("mode")
+        # mode: Optional[str] = request.json.get("mode")
         image = base64.b64decode(raw_image.split(",")[1])
         face_id, ok = face_search_service.search(image)
         if not ok:
