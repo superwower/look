@@ -15,13 +15,15 @@ def create_app(config_filename: Optional[str] = None) -> Flask:
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
 
-    if config_filename is not None:
-        app.config.from_mapping(config_filename)  # type: ignore
-
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    if config_filename is not None:
+        _, ext = os.path.splitext(config_filename)
+        assert ext == ".cfg"
+        app.config.from_pyfile(config_filename)  # type: ignore
 
     db.init_app(app)
     add_routes(app)

@@ -12,15 +12,13 @@ from .user_repo import UserRepository
 def add_routes(app: Flask) -> None:
     @app.route('/api/auth', methods=['POST'])
     def authenticate() -> Any:
-        collection_id = app.config.get("collection_id")
+        collection_id = app.config.get("COLLECTION_ID")
         assert collection_id is not None
-        collection_id = "look"
         face_search_service = FaceSearchService(collection_id)
         user_repo = UserRepository()
         attendance_service: AbstractAttendanceService
-        if app.config.get("attendance_service_type") == "real":
-            endpoint = app.config.get("attendance_service_endpoint")
-            assert endpoint is not None
+        endpoint = app.config.get("ATTENDANCE_SERVICE_ENDPOINT")
+        if endpoint is not None:
             attendance_service = AttendanceService(endpoint)
         else:
             attendance_service = MockAttendanceService("http://endpont.hoge")
